@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Aventure 26",
+    "slug": "aventure26",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#F8EDEB"
+    },
+    "ios": { "supportsTablet": true },
+    "android": {},
+    "extra": {
+      "apiUrl": "http://localhost:4000/api"
+    }
+  }
+}

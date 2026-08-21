@@ -1,0 +1,611 @@
+<title>Wireframes Aventure 26</title>
+<style>
+  @font-face {
+    font-family: "WF-Serif-Fallback";
+    src: local("Iowan Old Style"), local("Palatino Linotype"), local("Georgia");
+  }
+
+  :root {
+    --bg: #f3ede6;
+    --canvas: #ece2d8;
+    --surface: #ffffff;
+    --surface-2: #faf6f1;
+    --ink: #3a2e2e;
+    --ink-dim: #8a7a75;
+    --ink-faint: #b3a49d;
+    --line: #d6c9be;
+    --line-strong: #b9a89a;
+    --gold: #b8902b;
+    --gold-fill: #d4af37;
+    --pink: #e3aeb0;
+    --pink-fill: #eac1c1;
+    --annotation: #93664a;
+    --annotation-bg: #efe1d3;
+    --good: #4f7a5c;
+    --warn: #b7522f;
+    --shadow: 0 1px 2px rgba(58, 46, 46, 0.06), 0 8px 24px -12px rgba(58, 46, 46, 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #211b18;
+      --canvas: #29211d;
+      --surface: #2d2521;
+      --surface-2: #342b26;
+      --ink: #f2e9e2;
+      --ink-dim: #baa89f;
+      --ink-faint: #8a7871;
+      --line: #4a3c34;
+      --line-strong: #5e4c42;
+      --gold: #e3bd5c;
+      --gold-fill: #d4af37;
+      --pink: #e3aeb0;
+      --pink-fill: #7a4a4a;
+      --annotation: #dcb08a;
+      --annotation-bg: #3a2e26;
+      --good: #7fae8c;
+      --warn: #e08862;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #211b18;
+    --canvas: #29211d;
+    --surface: #2d2521;
+    --surface-2: #342b26;
+    --ink: #f2e9e2;
+    --ink-dim: #baa89f;
+    --ink-faint: #8a7871;
+    --line: #4a3c34;
+    --line-strong: #5e4c42;
+    --gold: #e3bd5c;
+    --gold-fill: #d4af37;
+    --pink: #e3aeb0;
+    --pink-fill: #7a4a4a;
+    --annotation: #dcb08a;
+    --annotation-bg: #3a2e26;
+    --good: #7fae8c;
+    --warn: #e08862;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0 0 64px;
+  }
+
+  .serif {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+
+  header.top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 32px;
+  }
+
+  .top-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 1180px;
+    margin: 0 auto 14px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.01em;
+  }
+  .brand span { color: var(--pink); }
+
+  .brand-sub {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-top: 2px;
+  }
+
+  .theme-toggle {
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .theme-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  nav.tabs {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  nav.tabs button {
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--ink-dim);
+    padding: 8px 16px;
+    border-radius: 10px 10px 0 0;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: none;
+  }
+  nav.tabs button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--gold-fill);
+    color: #2a2119;
+    border-color: var(--gold-fill);
+  }
+
+  main {
+    max-width: 1180px;
+    margin: 28px auto 0;
+    padding: 0 32px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: fade 0.25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .screen-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 18px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .screen-head h1 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 1.6rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .screen-desc {
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+    max-width: 46ch;
+    margin: 4px 0 0;
+  }
+
+  .device {
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 22px;
+  }
+
+  .block {
+    background: var(--surface);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: 12px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .block.solid { border-style: solid; }
+
+  .tag {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--annotation-bg);
+    color: var(--annotation);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  .placeholder-line {
+    height: 9px;
+    border-radius: 4px;
+    background: var(--line);
+    opacity: 0.7;
+  }
+
+  .btn-wf {
+    display: inline-block;
+    background: var(--gold-fill);
+    color: #2a2119;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 9px 18px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--gold-fill);
+  }
+  .btn-wf.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    font-weight: 600;
+  }
+
+  .chip {
+    font-size: 0.68rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-dim);
+    background: var(--surface-2);
+  }
+
+  /* ---- Ventas ---- */
+  .sales-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; }
+  @media (max-width: 760px) { .sales-grid { grid-template-columns: 1fr; } }
+
+  .service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.86rem;
+  }
+  .service-item:last-child { border-bottom: none; }
+  .service-item .price { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .checkbox-wf {
+    width: 16px; height: 16px; border: 1.5px solid var(--line-strong); border-radius: 4px; display: inline-block; margin-right: 10px; vertical-align: -3px;
+  }
+
+  .summary-row { display: flex; justify-content: space-between; font-size: 0.86rem; padding: 6px 0; color: var(--ink-dim); }
+  .summary-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; padding-top: 12px; margin-top: 8px; border-top: 1px solid var(--line-strong); font-variant-numeric: tabular-nums; }
+
+  /* ---- Calendario ---- */
+  .cal-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-dow { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); text-align: center; padding-bottom: 4px; }
+  .cal-cell { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; min-height: 78px; padding: 6px; font-size: 0.66rem; }
+  .cal-cell .daynum { color: var(--ink-faint); margin-bottom: 4px; }
+  .cal-slot { background: var(--pink-fill); color: var(--ink); border-radius: 5px; padding: 2px 5px; margin-bottom: 3px; font-size: 0.62rem; opacity: 0.9; }
+  .cal-slot.gold { background: var(--gold-fill); color: #2a2119; }
+
+  /* ---- Dashboard ---- */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  @media (max-width: 760px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card .stat-label { font-size: 0.72rem; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-card .stat-value { font-family: Georgia, serif; font-size: 1.5rem; margin-top: 6px; color: var(--gold); font-variant-numeric: tabular-nums; }
+
+  .chart-placeholder {
+    height: 160px;
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, transparent 0%, transparent 100%),
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 60px);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .chart-placeholder svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 760px) { .dash-grid { grid-template-columns: 1fr; } }
+
+  /* ---- tables (Inventario / Gastos) ---- */
+  .filters-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .filter-box { border: 1px solid var(--line-strong); border-radius: 8px; padding: 7px 12px; font-size: 0.78rem; color: var(--ink-dim); background: var(--surface); min-width: 120px; }
+
+  table.wf-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  table.wf-table th {
+    text-align: left; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.05em;
+    color: var(--ink-faint); padding: 8px 10px; border-bottom: 1px solid var(--line-strong);
+  }
+  table.wf-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .status-pill { font-size: 0.65rem; padding: 2px 8px; border-radius: 999px; font-weight: 700; }
+  .status-pill.ok { background: color-mix(in srgb, var(--good) 20%, transparent); color: var(--good); }
+  .status-pill.low { background: color-mix(in srgb, var(--warn) 20%, transparent); color: var(--warn); }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.76rem; margin-bottom: 8px; }
+  .bar-track { flex: 1; height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--gold-fill); }
+
+  .annot-legend {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+  }
+  .annot-legend .tag-demo {
+    background: var(--annotation-bg); color: var(--annotation); padding: 2px 8px; border-radius: 999px;
+    font-family: ui-monospace, monospace; font-size: 0.65rem; margin-right: 6px;
+  }
+</style>
+
+<header class="top">
+  <div class="top-row">
+    <div>
+      <div class="brand">Aventure <span>26</span></div>
+      <div class="brand-sub">Wireframes · App de gestión</div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">🌙 Modo oscuro</button>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Pantallas">
+    <button role="tab" aria-selected="true" data-target="ventas">Ventas</button>
+    <button role="tab" aria-selected="false" data-target="citas">Calendario de Citas</button>
+    <button role="tab" aria-selected="false" data-target="dashboard">Dashboard</button>
+    <button role="tab" aria-selected="false" data-target="inventario">Inventario</button>
+    <button role="tab" aria-selected="false" data-target="gastos">Gastos</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- VENTAS -->
+  <section class="screen active" id="ventas">
+    <div class="screen-head">
+      <div>
+        <h1>Ventas por ítems</h1>
+        <p class="screen-desc">Lista de servicios, total acumulado y registro rápido de venta.</p>
+      </div>
+      <span class="chip">Rol: Estilista / Recepción</span>
+    </div>
+    <div class="device">
+      <div class="sales-grid">
+        <div class="block solid">
+          <span class="tag">lista de servicios</span>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Blower</span><span class="price">$45.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Hidratación</span><span class="price">$60.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Aminoácidos</span><span class="price">$90.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Keratina</span><span class="price">$180.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Reductor de volumen</span><span class="price">$150.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Balayage</span><span class="price">$220.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Iluminaciones</span><span class="price">$200.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Rayitos</span><span class="price">$130.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Peinado de novia</span><span class="price">$250.000</span></div>
+          <div class="service-item"><span><span class="checkbox-wf"></span>Peinado para niña</span><span class="price">$35.000</span></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="block">
+            <span class="tag">selector estilista / pago</span>
+            <div class="placeholder-line" style="width:70%; margin-bottom:10px;"></div>
+            <div class="placeholder-line" style="width:50%;"></div>
+          </div>
+          <div class="block solid">
+            <span class="tag">total</span>
+            <div class="summary-row"><span>Blower</span><span>$45.000</span></div>
+            <div class="summary-row"><span>Hidratación</span><span>$60.000</span></div>
+            <div class="summary-total"><span>Total</span><span>$105.000</span></div>
+            <div style="margin-top:14px; text-align:center;">
+              <span class="btn-wf" style="width:100%; box-sizing:border-box;">Registrar Venta</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section class="screen" id="citas">
+    <div class="screen-head">
+      <div>
+        <h1>Agendamiento de citas</h1>
+        <p class="screen-desc">Vista mensual con slots por cliente y servicio, disponibilidad por estilista.</p>
+      </div>
+      <span class="chip">Sincronizado con Google Calendar</span>
+    </div>
+    <div class="device">
+      <div class="cal-toolbar">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="btn-wf ghost">←</span>
+          <strong class="serif" style="font-size:1.05rem;">Agosto 2026</strong>
+          <span class="btn-wf ghost">→</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <span class="chip" style="background:var(--gold-fill); color:#2a2119; border-color:var(--gold-fill);">Mensual</span>
+          <span class="chip">Semanal</span>
+          <span class="btn-wf" style="margin-left:6px;">+ Agendar Cita</span>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-dow">Lun</div><div class="cal-dow">Mar</div><div class="cal-dow">Mié</div>
+        <div class="cal-dow">Jue</div><div class="cal-dow">Vie</div><div class="cal-dow">Sáb</div><div class="cal-dow">Dom</div>
+        <script>document.write('');</script>
+      </div>
+      <div class="cal-grid" id="calCells" style="margin-top:2px;"></div>
+      <p style="font-size:0.68rem; color:var(--ink-faint); margin-top:10px;">
+        <span class="tag-demo" style="background:var(--pink-fill); color:var(--ink); padding:2px 6px; border-radius:4px;">rosa</span> cita confirmada ·
+        <span class="tag-demo" style="background:var(--gold-fill); color:#2a2119; padding:2px 6px; border-radius:4px;">dorado</span> cita en curso/destacada
+      </p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="screen" id="dashboard">
+    <div class="screen-head">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="screen-desc">Resumen de ingresos, gastos y citas del día, con gráficas de rentabilidad.</p>
+      </div>
+      <span class="chip">Rol: Administrador</span>
+    </div>
+    <div class="device">
+      <div class="stat-row">
+        <div class="block solid stat-card"><span class="tag">kpi</span><div class="stat-label">Ingresos hoy</div><div class="stat-value">$480.000</div></div>
+        <div class="block solid stat-card"><span class="tag">kpi</span><div class="stat-label">Citas hoy</div><div class="stat-value">7</div></div>
+        <div class="block solid stat-card"><span class="tag">kpi</span><div class="stat-label">Utilidad del mes</div><div class="stat-value">$3.9M</div></div>
+        <div class="block solid stat-card"><span class="tag">kpi</span><div class="stat-label">Alertas de stock</div><div class="stat-value">2</div></div>
+      </div>
+
+      <div class="block solid" style="margin-bottom:16px;">
+        <span class="tag">gráfica ingresos vs gastos</span>
+        <div class="chart-placeholder">
+          <svg viewBox="0 0 400 140" preserveAspectRatio="none">
+            <polyline points="0,110 40,95 80,100 120,70 160,80 200,50 240,60 280,35 320,45 360,20 400,30"
+              fill="none" stroke="var(--gold-fill)" stroke-width="2.5" />
+            <polyline points="0,130 40,125 80,120 120,128 160,118 200,122 240,110 280,116 320,105 360,112 400,100"
+              fill="none" stroke="var(--pink)" stroke-width="2.5" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="block solid">
+        <span class="tag">tabla · próximas citas</span>
+        <table class="wf-table">
+          <thead><tr><th>Hora</th><th>Cliente</th><th>Servicio</th><th>Estilista</th></tr></thead>
+          <tbody>
+            <tr><td>15:00</td><td>Ana Marcela Sierra</td><td>Balayage</td><td>Valentina Ríos</td></tr>
+            <tr><td>16:30</td><td>Laura Gómez</td><td>Blower</td><td>Camila Torres</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVENTARIO -->
+  <section class="screen" id="inventario">
+    <div class="screen-head">
+      <div>
+        <h1>Inventario</h1>
+        <p class="screen-desc">Control de stock con filtros, alertas de mínimo y consumo por servicio.</p>
+      </div>
+      <span class="btn-wf">⬇ Descargar Excel</span>
+    </div>
+    <div class="device">
+      <div class="dash-grid">
+        <div class="block solid">
+          <span class="tag">filtros + tabla</span>
+          <div class="filters-row">
+            <div class="filter-box">Buscar producto…</div>
+            <div class="filter-box">Categoría ▾</div>
+          </div>
+          <table class="wf-table">
+            <thead><tr><th>Producto</th><th>Stock</th><th>Mínimo</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>Shampoo hidratante</td><td>20</td><td>5</td><td><span class="status-pill ok">OK</span></td></tr>
+              <tr><td>Papel aluminio</td><td>3</td><td>5</td><td><span class="status-pill low">Bajo</span></td></tr>
+              <tr><td>Keratina profesional</td><td>8</td><td>3</td><td><span class="status-pill ok">OK</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block solid">
+          <span class="tag">consumo por servicio</span>
+          <div class="bar-row"><span style="width:110px;">Keratina</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div></div>
+          <div class="bar-row"><span style="width:110px;">Decolorante</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div></div>
+          <div class="bar-row"><span style="width:110px;">Tinte</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div></div>
+          <div class="bar-row"><span style="width:110px;">Aminoácidos</span><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GASTOS -->
+  <section class="screen" id="gastos">
+    <div class="screen-head">
+      <div>
+        <h1>Gastos</h1>
+        <p class="screen-desc">Registro de gastos fijos/variables, comparación con ingresos y flujo de caja.</p>
+      </div>
+      <span class="btn-wf">⬇ Descargar Excel</span>
+    </div>
+    <div class="device">
+      <div class="dash-grid">
+        <div class="block solid">
+          <span class="tag">formulario · registrar gasto</span>
+          <div class="placeholder-line" style="width:60%; margin-bottom:10px;"></div>
+          <div class="placeholder-line" style="width:80%; margin-bottom:10px;"></div>
+          <div class="placeholder-line" style="width:40%; margin-bottom:14px;"></div>
+          <span class="btn-wf ghost" style="display:block; text-align:center;">Registrar</span>
+        </div>
+        <div class="block solid">
+          <span class="tag">tabla + filtros</span>
+          <div class="filters-row"><div class="filter-box">Rango de fechas</div><div class="filter-box">Categoría ▾</div></div>
+          <table class="wf-table">
+            <thead><tr><th>Fecha</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr></thead>
+            <tbody>
+              <tr><td>15 ago</td><td>Arriendo</td><td>Fijo</td><td>$3.500.000</td></tr>
+              <tr><td>18 ago</td><td>Insumos</td><td>Variable</td><td>$420.000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="annot-legend">
+    <span><span class="tag-demo">tag</span>anota el componente funcional del bloque (para desarrollo)</span>
+    <span>▭▭▭ líneas grises = contenido de texto de relleno</span>
+    <span>Ver también: <code class="mono">docs/FLUJO_USUARIO.md</code></span>
+  </div>
+</main>
+
+<script>
+  const tabs = document.getElementById("tabs");
+  tabs.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-target]");
+    if (!btn) return;
+    tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-selected", "false"));
+    btn.setAttribute("aria-selected", "true");
+    document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+    document.getElementById(btn.dataset.target).classList.add("active");
+  });
+
+  const themeToggle = document.getElementById("themeToggle");
+  function applyTheme(mode) {
+    if (mode === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+      themeToggle.textContent = "☀️ Modo claro";
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      themeToggle.textContent = "🌙 Modo oscuro";
+    }
+  }
+  let current = "light";
+  themeToggle.addEventListener("click", () => {
+    current = current === "light" ? "dark" : "light";
+    applyTheme(current);
+  });
+
+  // Genera la cuadrícula del mes (agosto 2026) con un par de citas de ejemplo
+  const calCells = document.getElementById("calCells");
+  const daysInMonth = 31;
+  const startWeekday = 5; // 1 ago 2026 es sábado -> índice lunes=0 ... sábado=5
+  const demoAppointments = {
+    5: [{ t: "10:00", n: "L. Gómez", gold: false }],
+    12: [{ t: "15:00", n: "A. Sierra", gold: true }, { t: "17:00", n: "M. Ruiz", gold: false }],
+    20: [{ t: "09:30", n: "C. Peña", gold: false }],
+    27: [{ t: "16:30", n: "L. Gómez", gold: false }],
+  };
+  let html = "";
+  for (let i = 0; i < startWeekday; i++) html += `<div class="cal-cell" style="visibility:hidden;"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const appts = demoAppointments[d] || [];
+    html += `<div class="cal-cell"><div class="daynum">${d}</div>${appts
+      .map((a) => `<div class="cal-slot${a.gold ? " gold" : ""}">${a.t} ${a.n}</div>`)
+      .join("")}</div>`;
+  }
+  calCells.innerHTML = html;
+</script>

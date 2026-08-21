@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --a26-pink: #eac1c1;
+  --a26-beige: #f8edeb;
+  --a26-gold: #d4af37;
+  --a26-white: #ffffff;
+  --a26-ink: #3a2e2e;
+}
+
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Playfair Display", serif;
+}
+
+.card {
+  @apply bg-white dark:bg-neutral-800 rounded-a26 shadow-sm border border-a26-pink/30 dark:border-neutral-700 p-5;
+}
+
+.btn-primary {
+  @apply bg-a26-gold text-white font-semibold px-4 py-2 rounded-a26 hover:opacity-90 transition;
+}
+
+.btn-secondary {
+  @apply bg-a26-pink/40 dark:bg-neutral-700 text-a26-ink dark:text-neutral-100 font-medium px-4 py-2 rounded-a26 hover:opacity-90 transition;
+}
+
+.input {
+  @apply w-full border border-a26-pink/50 dark:border-neutral-600 bg-white dark:bg-neutral-900 rounded-a26 px-3 py-2 outline-none focus:ring-2 focus:ring-a26-gold;
+}
+
+table.a26-table th {
+  @apply text-left text-sm uppercase tracking-wide text-a26-ink/60 dark:text-neutral-400 py-2 px-3 border-b border-a26-pink/30 dark:border-neutral-700;
+}
+
+table.a26-table td {
+  @apply py-2 px-3 border-b border-a26-pink/10 dark:border-neutral-800 text-sm;
+}

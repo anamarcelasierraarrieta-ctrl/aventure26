@@ -1,0 +1,203 @@
+// Aventure 26 — Modelo de datos
+// PostgreSQL + Prisma ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  RECEPTION
+  STYLIST
+  ASSISTANT
+}
+
+enum PaymentMethod {
+  CASH
+  CARD_STRIPE
+  PAYPAL
+  NEQUI
+  DAVIPLATA
+}
+
+enum ExpenseType {
+  FIXED
+  VARIABLE
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model User {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  passwordHash   String
+  role           Role     @default(STYLIST)
+  phone          String?
+  active         Boolean  @default(true)
+  commissionRate Decimal  @default(0) @db.Decimal(5, 2) // % sobre venta
+  googleRefreshToken String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  sales        Sale[]         @relation("StylistSales")
+  appointments Appointment[]  @relation("StylistAppointments")
+
+  @@map("users")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String?
+  notes     String?
+  createdAt DateTime @default(now())
+
+  sales        Sale[]
+  appointments Appointment[]
+
+  @@map("clients")
+}
+
+model Service {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  category      String?
+  price         Decimal  @db.Decimal(10, 2)
+  durationMinutes Int    @default(60)
+  active        Boolean  @default(true)
+
+  saleItems     SaleItem[]
+  appointments  Appointment[]
+  consumptions  ServiceProductConsumption[]
+
+  @@map("services")
+}
+
+model Sale {
+  id            String        @id @default(uuid())
+  date          DateTime      @default(now())
+  clientId      String?
+  client        Client?       @relation(fields: [clientId], references: [id])
+  stylistId     String
+  stylist       User          @relation("StylistSales", fields: [stylistId], references: [id])
+  paymentMethod PaymentMethod @default(CASH)
+  total         Decimal       @db.Decimal(10, 2)
+  commissionAmount Decimal    @default(0) @db.Decimal(10, 2)
+  appointmentId String?       @unique
+  appointment   Appointment?  @relation(fields: [appointmentId], references: [id])
+
+  items SaleItem[]
+  inventoryMovements InventoryMovement[]
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id        String  @id @default(uuid())
+  saleId    String
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id])
+  price     Decimal @db.Decimal(10, 2)
+  quantity  Int     @default(1)
+
+  @@map("sale_items")
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  sku       String   @unique
+  category  String?
+  unit      String   @default("unidad")
+  stock     Decimal  @default(0) @db.Decimal(10, 2)
+  minStock  Decimal  @default(0) @db.Decimal(10, 2)
+  costPrice Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+
+  movements    InventoryMovement[]
+  consumptions ServiceProductConsumption[]
+
+  @@map("products")
+}
+
+model InventoryMovement {
+  id        String       @id @default(uuid())
+  productId String
+  product   Product      @relation(fields: [productId], references: [id])
+  type      MovementType
+  quantity  Decimal      @db.Decimal(10, 2)
+  reason    String?
+  saleId    String?
+  sale      Sale?        @relation(fields: [saleId], references: [id])
+  date      DateTime     @default(now())
+
+  @@map("inventory_movements")
+}
+
+// Cuánto de un producto consume (en promedio) un servicio -> permite
+// descontar inventario automáticamente al registrar una venta.
+model ServiceProductConsumption {
+  id         String  @id @default(uuid())
+  serviceId  String
+  service    Service @relation(fields: [serviceId], references: [id])
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  quantityUsed Decimal @db.Decimal(10, 2)
+
+  @@unique([serviceId, productId])
+  @@map("service_product_consumption")
+}
+
+model Expense {
+  id          String      @id @default(uuid())
+  date        DateTime    @default(now())
+  category    String
+  description String?
+  amount      Decimal     @db.Decimal(10, 2)
+  type        ExpenseType @default(VARIABLE)
+  createdAt   DateTime    @default(now())
+
+  @@map("expenses")
+}
+
+model Appointment {
+  id                String            @id @default(uuid())
+  clientId          String
+  client            Client            @relation(fields: [clientId], references: [id])
+  stylistId         String
+  stylist           User              @relation("StylistAppointments", fields: [stylistId], references: [id])
+  serviceId         String
+  service           Service           @relation(fields: [serviceId], references: [id])
+  startTime         DateTime
+  endTime           DateTime
+  status            AppointmentStatus @default(PENDING)
+  notes             String?
+  confirmationSent  Boolean           @default(false)
+  reminder24hSent   Boolean           @default(false)
+  reminder2hSent    Boolean           @default(false)
+  googleEventId     String?
+  createdAt         DateTime          @default(now())
+
+  sale Sale?
+
+  @@map("appointments")
+}
