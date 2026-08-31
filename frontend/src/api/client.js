@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "/api" });
+// En desarrollo, Vite hace proxy de /api al backend local (ver vite.config.js).
+// En producción (Railway), el frontend y el backend viven en dominios distintos,
+// así que VITE_API_URL debe apuntar a la URL pública del backend + /api.
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "/api" });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("a26_access_token");
