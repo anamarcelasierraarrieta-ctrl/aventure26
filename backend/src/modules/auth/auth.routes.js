@@ -12,6 +12,11 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(6, "La nueva contraseña debe tener al menos 6 caracteres"),
+});
+
 function signTokens(user) {
   const payload = { id: user.id, role: user.role, name: user.name, email: user.email };
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
@@ -71,6 +76,26 @@ router.get(
       select: { id: true, name: true, email: true, role: true, phone: true, commissionRate: true },
     });
     res.json(user);
+  })
+);
+
+// POST /api/auth/change-password — el usuario autenticado cambia su propia contraseña
+router.post(
+  "/change-password",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { currentPassword, newPassword } = changePasswordSchema.parse(req.body);
+
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user || !user.active) return res.status(401).json({ error: "No autenticado" });
+
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) return res.status(400).json({ error: "La contraseña actual es incorrecta" });
+
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+
+    res.json({ ok: true });
   })
 );
 
