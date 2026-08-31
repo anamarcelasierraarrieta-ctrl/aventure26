@@ -2,6 +2,15 @@
 
 Sistema modular de ventas por ítems, inventario, personal/operaciones, gastos y agendamiento de citas para la peluquería **Aventure 26**, con identidad visual propia, exportación a Excel y dashboards.
 
+## 🚀 En vivo (Railway)
+
+| Servicio | URL |
+|---|---|
+| App web | https://frontend-production-3373.up.railway.app |
+| API backend | https://backend-production-86342.up.railway.app/api |
+
+Usuario demo: `admin@aventure26.demo` / `Aventure26!` (ver más abajo). Proyecto Railway: `aventure26` (servicios `backend`, `frontend`, `Postgres`).
+
 - 📐 Arquitectura completa: [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md)
 - 🧭 Flujo de usuario: [docs/FLUJO_USUARIO.md](docs/FLUJO_USUARIO.md)
 - 🔌 Integraciones (WhatsApp, Google Calendar, pagos): [docs/INTEGRACIONES.md](docs/INTEGRACIONES.md)
