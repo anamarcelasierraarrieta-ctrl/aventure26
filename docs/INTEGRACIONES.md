@@ -6,7 +6,7 @@ Todas las integraciones viven en `backend/src/integrations/` detrás de una inte
 
 - Archivo: `src/integrations/whatsapp.service.js`
 - Variables: `WHATSAPP_API_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`
-- Usos: confirmación de cita, recordatorio 24h/2h antes, notificación al estilista.
+- Usos: confirmación de cita, recordatorio 24h/1h antes, notificación al estilista.
 - En desarrollo (`NODE_ENV=development` sin token), el servicio hace `console.log` del mensaje en vez de llamar a la API — permite probar el flujo completo sin cuenta de WhatsApp Business.
 
 ## Google Calendar

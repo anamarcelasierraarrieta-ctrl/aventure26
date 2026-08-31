@@ -10,7 +10,7 @@
    - WhatsApp Business API (plantilla de confirmación) vía `integrations/whatsapp.service.js`.
    - Correo electrónico (fallback si no hay WhatsApp) vía `nodemailer`.
    - Evento en Google Calendar del estilista vía `integrations/googleCalendar.service.js`.
-6. Un job programado (`cron`, ver `dashboard`/`appointments` module) envía **recordatorios** 24h y 2h antes, a cliente y estilista.
+6. Un job programado (`cron`, ver `dashboard`/`appointments` module) envía **recordatorios** 24h y 1h antes, a cliente y estilista.
 
 ## 2. Estilista atiende y registra el servicio
 
@@ -38,7 +38,7 @@ Cliente                Backend                         Estilista/Admin
   │                        │  Crea Appointment (PENDING)        │
   │  Confirmación WhatsApp │◄─────────────────────────────────┤
   │◄───────────────────────┤                                  │
-  │                        │        Recordatorio 24h/2h antes  │
+  │                        │        Recordatorio 24h/1h antes  │
   │◄───────────────────────┤─────────────────────────────────►│
   │                        │                                  │
   │                        │   Estilista registra venta        │

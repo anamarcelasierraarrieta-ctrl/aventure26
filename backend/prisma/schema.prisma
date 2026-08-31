@@ -193,7 +193,7 @@ model Appointment {
   notes             String?
   confirmationSent  Boolean           @default(false)
   reminder24hSent   Boolean           @default(false)
-  reminder2hSent    Boolean           @default(false)
+  reminder1hSent    Boolean           @default(false)
   googleEventId     String?
   createdAt         DateTime          @default(now())
 

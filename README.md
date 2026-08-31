@@ -96,6 +96,6 @@ Este repositorio es una base funcional y modular lista para extender, no un prod
 - ✅ Backend con todos los endpoints de los 5 módulos + auth JWT + exportación a Excel real.
 - ✅ Frontend web funcional contra la API (login, dashboard con gráficas, ventas, citas con calendario, inventario, personal, gastos).
 - ✅ Integraciones de WhatsApp/Google Calendar/pagos en modo "mock" listas para activar con credenciales reales (ver [docs/INTEGRACIONES.md](docs/INTEGRACIONES.md)).
-- ✅ Recordatorios automáticos 24h/2h antes de cada cita (`src/jobs/reminders.job.js`, corre cada 15 min vía `node-cron`, arranca junto con el servidor).
+- ✅ Recordatorios automáticos 24h/1h antes de cada cita (`src/jobs/reminders.job.js`, corre cada 15 min vía `node-cron`, arranca junto con el servidor).
 - ✅ Auto-agendamiento público sin login (`/agendar`): el cliente ve disponibilidad real por día/hora con el nombre de la estilista de turno y confirma sola — dispara WhatsApp/Google Calendar automáticamente (`backend/src/modules/public/public.routes.js`).
 - ⚠️ Mobile: scaffold mínimo (login + lista de citas) — falta el flujo completo de agendamiento desde el móvil.
