@@ -4,6 +4,7 @@ const cors = require("cors");
 const { notFound, errorHandler } = require("./middleware/error.middleware");
 
 const authRoutes = require("./modules/auth/auth.routes");
+const publicRoutes = require("./modules/public/public.routes");
 const servicesRoutes = require("./modules/services/services.routes");
 const salesRoutes = require("./modules/sales/sales.routes");
 const inventoryRoutes = require("./modules/inventory/inventory.routes");
@@ -20,6 +21,7 @@ app.use(express.json());
 app.get("/api/health", (req, res) => res.json({ ok: true, app: "Aventure 26 API" }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/public", publicRoutes);
 app.use("/api/services", servicesRoutes);
 app.use("/api/sales", salesRoutes);
 app.use("/api/inventory", inventoryRoutes);

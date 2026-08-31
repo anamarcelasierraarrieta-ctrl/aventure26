@@ -7,6 +7,7 @@ const { authenticate } = require("../../middleware/auth.middleware");
 const { sendExcel } = require("../../utils/excel.util");
 const whatsapp = require("../../integrations/whatsapp.service");
 const googleCalendar = require("../../integrations/googleCalendar.service");
+const { getAvailability } = require("./availability.util");
 
 router.use(authenticate);
 
@@ -43,42 +44,9 @@ router.get(
   "/availability",
   asyncHandler(async (req, res) => {
     const { serviceId, date, stylistId } = req.query;
-    const service = await prisma.service.findUnique({ where: { id: serviceId } });
-    if (!service) return res.status(404).json({ error: "Servicio no encontrado" });
-
-    const dayStart = new Date(`${date}T00:00:00`);
-    const dayEnd = new Date(`${date}T23:59:59`);
-
-    const stylists = await prisma.user.findMany({
-      where: { role: "STYLIST", active: true, id: stylistId || undefined },
-    });
-
-    const busy = await prisma.appointment.findMany({
-      where: {
-        startTime: { gte: dayStart, lte: dayEnd },
-        status: { in: ["PENDING", "CONFIRMED"] },
-        stylistId: stylistId ? stylistId : { in: stylists.map((s) => s.id) },
-      },
-    });
-
-    const OPEN_HOUR = 9;
-    const CLOSE_HOUR = 19;
-    const slotMinutes = service.durationMinutes;
-
-    const availability = stylists.map((stylist) => {
-      const slots = [];
-      for (let h = OPEN_HOUR * 60; h + slotMinutes <= CLOSE_HOUR * 60; h += slotMinutes) {
-        const slotStart = new Date(dayStart.getTime() + h * 60000);
-        const slotEnd = new Date(slotStart.getTime() + slotMinutes * 60000);
-        const overlaps = busy.some(
-          (b) => b.stylistId === stylist.id && slotStart < b.endTime && slotEnd > b.startTime
-        );
-        if (!overlaps) slots.push(slotStart.toISOString());
-      }
-      return { stylistId: stylist.id, stylistName: stylist.name, slots };
-    });
-
-    res.json(availability);
+    const result = await getAvailability({ serviceId, date, stylistId });
+    if (result.error) return res.status(404).json({ error: result.error });
+    res.json(result.availability);
   })
 );
 

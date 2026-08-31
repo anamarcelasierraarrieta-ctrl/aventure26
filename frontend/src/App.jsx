@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
 import Login from "./pages/Login";
+import PublicBooking from "./pages/PublicBooking";
 import Dashboard from "./pages/Dashboard";
 import Sales from "./pages/Sales";
 import Inventory from "./pages/Inventory";
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/agendar" element={<PublicBooking />} />
       <Route path="/" element={<Protected><Dashboard /></Protected>} />
       <Route path="/ventas" element={<Protected><Sales /></Protected>} />
       <Route path="/citas" element={<Protected><Appointments /></Protected>} />

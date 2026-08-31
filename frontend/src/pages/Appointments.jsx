@@ -28,6 +28,15 @@ export default function Appointments() {
   const [cursor, setCursor] = useState(new Date());
   const [appointments, setAppointments] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  function copyBookingLink() {
+    const url = `${window.location.origin}/agendar`;
+    navigator.clipboard?.writeText(url).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  }
 
   const monthStart = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const monthEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0, 23, 59, 59);
@@ -62,9 +71,16 @@ export default function Appointments() {
             </button>
           ))}
           <ExportButton path="/appointments/export" filename="citas_aventure26.xlsx" />
+          <button className="btn-secondary text-sm" onClick={copyBookingLink}>
+            {linkCopied ? "✓ Enlace copiado" : "🔗 Enlace de auto-agendamiento"}
+          </button>
           <button className="btn-primary text-sm" onClick={() => setShowForm(true)}>+ Agendar Cita</button>
         </div>
       </div>
+      <p className="text-xs text-a26-ink/50 dark:text-neutral-500 -mt-2">
+        Comparte ese enlace con tus clientas (bio de Instagram, WhatsApp, tu web) para que agenden solas, sin
+        contactarte primero.
+      </p>
 
       {view === "month" ? (
         <div className="card">

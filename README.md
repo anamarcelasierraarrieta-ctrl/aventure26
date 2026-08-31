@@ -6,10 +6,13 @@ Sistema modular de ventas por ítems, inventario, personal/operaciones, gastos y
 
 | Servicio | URL |
 |---|---|
-| App web | https://frontend-production-3373.up.railway.app |
+| App web (staff/admin) | https://frontend-production-3373.up.railway.app |
+| **Auto-agendamiento (clientes, sin login)** | **https://frontend-production-3373.up.railway.app/agendar** |
 | API backend | https://backend-production-86342.up.railway.app/api |
 
 Usuario demo: `admin@aventure26.demo` / `Aventure26!` (ver más abajo). Proyecto Railway: `aventure26` (servicios `backend`, `frontend`, `Postgres`).
+
+El enlace `/agendar` es público (sin login) — compártelo en bio de Instagram, WhatsApp o la web de Aventure 26 para que las clientas vean disponibilidad real (día, hora y estilista de turno) y agenden solas. Desde el módulo interno **Citas** hay un botón "🔗 Enlace de auto-agendamiento" que lo copia al portapapeles.
 
 - 📐 Arquitectura completa: [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md)
 - 🧭 Flujo de usuario: [docs/FLUJO_USUARIO.md](docs/FLUJO_USUARIO.md)
@@ -94,4 +97,5 @@ Este repositorio es una base funcional y modular lista para extender, no un prod
 - ✅ Frontend web funcional contra la API (login, dashboard con gráficas, ventas, citas con calendario, inventario, personal, gastos).
 - ✅ Integraciones de WhatsApp/Google Calendar/pagos en modo "mock" listas para activar con credenciales reales (ver [docs/INTEGRACIONES.md](docs/INTEGRACIONES.md)).
 - ✅ Recordatorios automáticos 24h/2h antes de cada cita (`src/jobs/reminders.job.js`, corre cada 15 min vía `node-cron`, arranca junto con el servidor).
+- ✅ Auto-agendamiento público sin login (`/agendar`): el cliente ve disponibilidad real por día/hora con el nombre de la estilista de turno y confirma sola — dispara WhatsApp/Google Calendar automáticamente (`backend/src/modules/public/public.routes.js`).
 - ⚠️ Mobile: scaffold mínimo (login + lista de citas) — falta el flujo completo de agendamiento desde el móvil.
