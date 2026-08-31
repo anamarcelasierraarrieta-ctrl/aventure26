@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import AppLayout from "../components/layout/AppLayout";
 import ExportButton from "../components/ui/ExportButton";
+import ProductModal from "../components/ui/ProductModal";
 import api from "../api/client";
 
 const currency = (n) =>
@@ -11,22 +12,37 @@ export default function Inventory() {
   const [products, setProducts] = useState([]);
   const [consumption, setConsumption] = useState([]);
   const [filter, setFilter] = useState("");
+  const [modalState, setModalState] = useState(null); // null | { product: null | product }
+
+  function loadProducts() {
+    api.get("/inventory").then((r) => setProducts(r.data));
+  }
 
   useEffect(() => {
-    api.get("/inventory").then((r) => setProducts(r.data));
+    loadProducts();
     api.get("/inventory/consumption").then((r) => setConsumption(r.data));
   }, []);
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(filter.toLowerCase()));
   const maxConsumo = Math.max(1, ...consumption.map((c) => Number(c.totalConsumido || 0)));
 
+  function handleSaved() {
+    setModalState(null);
+    loadProducts();
+  }
+
   return (
     <AppLayout title="Inventario">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="card lg:col-span-2">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 gap-2 flex-wrap">
             <h3 className="font-display text-lg">Productos</h3>
-            <ExportButton path="/inventory/export" filename="inventario_aventure26.xlsx" />
+            <div className="flex gap-2">
+              <ExportButton path="/inventory/export" filename="inventario_aventure26.xlsx" />
+              <button className="btn-primary text-sm" onClick={() => setModalState({ product: null })}>
+                + Agregar producto
+              </button>
+            </div>
           </div>
           <input
             className="input mb-4"
@@ -36,7 +52,7 @@ export default function Inventory() {
           />
           <table className="a26-table w-full">
             <thead>
-              <tr><th>Producto</th><th>SKU</th><th>Stock</th><th>Mínimo</th><th>Costo</th><th>Estado</th></tr>
+              <tr><th>Producto</th><th>SKU</th><th>Stock</th><th>Mínimo</th><th>Costo</th><th>Estado</th><th></th></tr>
             </thead>
             <tbody>
               {filtered.map((p) => (
@@ -51,8 +67,19 @@ export default function Inventory() {
                       {p.lowStock ? "Bajo mínimo" : "OK"}
                     </span>
                   </td>
+                  <td>
+                    <button
+                      className="text-xs text-a26-gold hover:underline"
+                      onClick={() => setModalState({ product: p })}
+                    >
+                      Editar
+                    </button>
+                  </td>
                 </tr>
               ))}
+              {!filtered.length && (
+                <tr><td colSpan={7} className="text-center py-6 text-a26-ink/50">Sin productos que coincidan</td></tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -78,6 +105,14 @@ export default function Inventory() {
           </div>
         </div>
       </div>
+
+      {modalState && (
+        <ProductModal
+          product={modalState.product}
+          onClose={() => setModalState(null)}
+          onSaved={handleSaved}
+        />
+      )}
     </AppLayout>
   );
 }
